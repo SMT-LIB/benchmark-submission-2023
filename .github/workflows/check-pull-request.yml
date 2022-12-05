@@ -58,7 +58,7 @@ jobs:
       - name: Install dolmen
         run: |
           if [ "[${{steps.dolmen-cache.outputs.cache-hit}}]" = "[]" ]; then
-            wget https://github.com/Gbury/dolmen/releases/download/v0.6/dolmen-linux-amd64
+            wget https://github.com/Gbury/dolmen/releases/download/v0.7/dolmen-linux-amd64
           fi
           chmod +x ./dolmen-linux-amd64
       - name: Check files
