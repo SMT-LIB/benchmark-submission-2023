@@ -1,0 +1,75 @@
+name: Check Pull Request
+on: [pull_request]
+jobs:
+  basic-checks:
+    runs-on: ubuntu-latest
+    outputs:
+      added-files: ${{ steps.files.outputs.added }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - name: Check if pull request removes benchmarks
+        run: |
+          if [[ "${{ steps.files.outputs.removed }}" != "" ]] ; then
+            echo "This pull requests removes benchmarks!" ; exit 1
+          fi
+      # Disabled since this prevents benchmark fixes by the authors after
+      # merging a PR.
+      #- name: Check if pull request modifies benchmarks
+      #  run: |
+      #    if ! [[ "${{ steps.files.outputs.modified }}" == "" ]]
+      #    then
+      #      echo "This pull requests modifies benchmarks!" ; exit 1
+      #    fi
+      - name: Check if duplicated benchmarks are present
+        run: |
+          DUPES=`find . ! -empty -type f -name *smt2 -exec md5sum {} + | sort | uniq -w32 -d  | cut -d ' ' -f 3`
+          if ! [[ "[$DUPES]" = "[]" ]]; then
+            echo "Some benchmarks are duplicates of other benchmarks."
+            echo $DUPES
+            exit 1
+          fi
+      - name: Check if folder structure and filenames are correct
+        run: |
+          valid_filenames="^(incremental|non-incremental)\/[A-Z_]+\/20[012][0-9][01][0-9][0123][0-9]-.+\/.+\.smt2$"
+          status=0
+          for added_file in ${{ steps.files.outputs.added }}; do
+            if ! [[ ${added_file} =~ $valid_filenames ]] ;  then
+              echo "The file ${added_file} has an inappropriate path!"
+              status=1
+            fi
+            if ! ./quick-check.sh ${added_file} ; then
+              status=1
+            fi
+          done
+          exit $status
+  check-with-dolmen:
+    needs: basic-checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache Dolmen
+        id: dolmen-cache
+        uses: actions/cache@v2
+        with:
+          key: dolmen-linux-amd64
+          path: ./dolmen-linux-amd64
+      - name: Install dolmen
+        run: |
+          if [ "[${{steps.dolmen-cache.outputs.cache-hit}}]" = "[]" ]; then
+            wget https://github.com/Gbury/dolmen/releases/download/v0.6/dolmen-linux-amd64
+          fi
+          chmod +x ./dolmen-linux-amd64
+      - name: Check files
+        run: |
+          status=0
+          for added_file in ${{ needs.basic-checks.outputs.added-files }}; do
+            ./dolmen-linux-amd64 -i smt2 --strict=false --check-headers=true --header-lang-version=2.6 ${added_file}
+            if [ $? -ne 0 ] ;  then
+              echo "Dolmen reported problems with ${added_file}."
+              status=1
+            fi
+          done
+          exit $status
+
