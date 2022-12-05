@@ -6,7 +6,7 @@ jobs:
     outputs:
       added-files: ${{ steps.files.outputs.added }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: files
         uses: jitterbit/get-changed-files@v1
       - name: Check if pull request removes benchmarks
@@ -48,10 +48,10 @@ jobs:
     needs: basic-checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache Dolmen
         id: dolmen-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           key: dolmen-linux-amd64
           path: ./dolmen-linux-amd64
