@@ -1,4 +1,4 @@
-# SMT-LIB Benchmark Submission -- 2023
+# SMT-LIB Benchmark Submission – 2023
 
 This repository serves as a staging repository for benchmarks submitted
 for inclusion in the SMT-LIB library.  The benchmarks submitted to this
