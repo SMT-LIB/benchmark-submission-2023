@@ -57,7 +57,7 @@ where:
   * Application: the general goal;
   * Target solver: the solvers that were initially used to check the benchmarks;
   * Publications: references to related publications.
-This can be followed by any other useful information in free text. 
+This should be followed by any other useful information in free text. 
 - ```<category>``` is either `"crafted"`, indicating that it was hand-made,
 `"random"`, indicating that it was generated randomly, or `"industrial"`
 (everything else).  Note that the quotes are significant.
@@ -69,6 +69,12 @@ the [Creative Commons Attribution 4.0 International
 License](https://creativecommons.org/licenses/by/4.0/), but submitters can
 specify their own licence in the benchmark itself using the ```(set-info
 :license "licence string")``` command.
+
+We encourage benchmark contributors to use the free text part of
+```<description>``` to describe characteristics of the benchmark
+that might be of interest to solver authors.  For example, observed
+performance discrepancies between solver configurations, or structures
+in the benchmark that are particularly difficult.
 
 An example:
 
