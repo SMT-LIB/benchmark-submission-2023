@@ -14,6 +14,8 @@ function print_error()
   echo "::error file=$BENCHMARK::$*"
 }
 
+BENCHMARK=$(echo $BENCHMARK | sed 's/^\.\///')
+
 echo "::group::Checking \"$BENCHMARK\""
 
 info "File" "$BENCHMARK"
