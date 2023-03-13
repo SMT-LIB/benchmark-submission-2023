@@ -6,9 +6,9 @@
     Generator: custom C code
     Application: Verification of floating point multiplication
     Target solver: Bitwuzla
-    Publications: Upcoming bachelor thesis, tentaively called XXX by Robin Trüby
+    Publications: Upcoming bachelor thesis, tentaively called _Generating word-level floating-point benchmarks_ by Robin Trüby
 
-Verification of integer multiplication is known to be a hard level when working on bits.
+Verification of integer multiplication is known to be a hard problem when working on bits.
 In this work we consider the multiplication of doubles/floating point/bfloat8/...
 as implemented in hardware. The idea is to use only three extra bits (calles GRS) and
 their value decide how rounding is done. We simply check that a+b = b+a.
