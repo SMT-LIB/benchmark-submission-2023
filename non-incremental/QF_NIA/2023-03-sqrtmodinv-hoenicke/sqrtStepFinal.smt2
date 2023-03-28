@@ -10,7 +10,7 @@ the square root from a good approximation
 
   assume abs(x - (res * res)) <= oldeps
   roundedDown = x / res
-  res = max(res, roundedDown)
+  res = min(res, roundedDown)
   assert res * res <= x < (res + 1) * (res + 1)
 
 |)
