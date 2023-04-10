@@ -7,6 +7,41 @@ Generator: Certora Prover
 Application: Formal verification of Ethereum Smart Contracts
 Target solver: z3, cvc4, cvc5
 Publications: https://docs.certora.com/en/latest/docs/whitepaper/index.html
+This benchmarkset was produced by the Certora Prover, i.e. a tool for
+formal verification of Ethereum Smart Contracts.  The benchmarks encode
+verification conditions for real Smart Contracts (programs) written by
+Certora customers.
+
+The Certora Prover uses various strategies and SMT encodings of the
+underlying verification problem. In most cases, we use either LIA,
+NIA or BV encodings, where:
+
+1. LIA is typically an overapproximation of the underlying verification
+   problem.
+2. NIA is typically a precise encoding.
+3. BV is required when the input contains non-trivial bitwise operations
+   that we do not model precisely with NIA (i.e., in these cases, NIA
+   is an overapproximation).
+
+Note that our specification language allows unbounded integers
+(i.e. mathints); this the reason why we need NIA and LIA instead of
+using just BV.
+
+We also use various encodings of "underlying hashing functions"; the
+two main encodings we use rely on i) UF and ii) on UFDT. Therefore,
+given a single input (a smart contract and a specification), we typically
+produce 6 different encodings: QF_UFNIA, QF_UFLIA, QF_UFBV, QF_UFDTNIA,
+QF_UFDTLIA, and QF_UFDTBV. The 462 benchmarks in this benchmark set
+originate from 77 unique smart contracts and specifications (77*6 =
+462) and can be mapped based on the common name-prefix of the files. For
+instances:
+
+./QF_UFBV/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFBV.smt2
+./QF_UFDTLIA/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFDTLIA.smt2
+./QF_UFLIA/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFLIA.smt2
+./QF_UFDTBV/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFDTBV.smt2
+./QF_UFDTNIA/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFDTNIA.smt2
+./QF_UFNIA/20230314-Jaroslav-Bendik-Certora/940_590f27b1c3c800d3243e_33_QF_UFNIA.smt2
 |)
 (set-info :license "https://creativecommons.org/licenses/by/4.0/")
 (set-info :category "industrial")
